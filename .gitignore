@@ -1,0 +1,15 @@
+GePro/.vs/
+GePro/GePro.API.Tests/bin/
+GePro/GePro.API.Tests/obj/
+GePro/GePro.API/bin/
+GePro/GePro.API/obj/
+GePro/GePro.Business.Tests/bin/
+GePro/GePro.Business.Tests/obj/
+GePro/GePro.Business/bin/
+GePro/GePro.Business/obj/
+GePro/GePro.DataAccess/bin/
+GePro/GePro.DataAccess/obj/
+GePro/GePro.Model/bin/
+GePro/GePro.Model/obj/
+GePro/GePro/.vscode/
+GePro/GePro/obj/
