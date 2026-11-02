@@ -1,0 +1,55 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="CLAUDE.md" />
+    <File Path="CONTEXT.md" />
+  </Folder>
+  <Folder Name="/Docs/">
+    <File Path="Docs/Angular.md" />
+    <File Path="Docs/Guia-Harness.md" />
+    <File Path="Docs/ProjectScaffold.md" />
+    <File Path="Docs/ProjectStructure.md" />
+    <File Path="Docs/Readme.md" />
+  </Folder>
+  <Folder Name="/Docs/adr/">
+    <File Path="Docs/adr/0001-arquitectura-en-capas.md" />
+  </Folder>
+  <Folder Name="/Docs/architecture/">
+    <File Path="Docs/architecture/angular.md" />
+    <File Path="Docs/architecture/api.md" />
+    <File Path="Docs/architecture/business.md" />
+    <File Path="Docs/architecture/data-access.md" />
+    <File Path="Docs/architecture/model.md" />
+    <File Path="Docs/architecture/overview.md" />
+  </Folder>
+  <Folder Name="/Docs/specs/_template/">
+    <File Path="Docs/specs/_template/spec.md" />
+    <File Path="Docs/specs/_template/tasks.md" />
+  </Folder>
+  <Folder Name="/.claude/skills/grill-with-docs/">
+    <File Path=".claude/skills/grill-with-docs/SKILL.md" />
+  </Folder>
+  <Folder Name="/.claude/skills/sdd/">
+    <File Path=".claude/skills/sdd/SKILL.md" />
+  </Folder>
+  <Folder Name="/.claude/skills/tdd/">
+    <File Path=".claude/skills/tdd/SKILL.md" />
+  </Folder>
+  <Folder Name="/.claude/skills/to-spec/">
+    <File Path=".claude/skills/to-spec/SKILL.md" />
+  </Folder>
+  <Folder Name="/.claude/skills/to-tasks/">
+    <File Path=".claude/skills/to-tasks/SKILL.md" />
+  </Folder>
+  <Folder Name="/Test/">
+    <Project Path="GePro.API.Tests/GePro.API.Tests.csproj" />
+    <Project Path="GePro.Business.Tests/GePro.Business.Tests.csproj" />
+  </Folder>
+  <Project Path="GePro.API/GePro.API.csproj" />
+  <Project Path="GePro.Business/GePro.Business.csproj" />
+  <Project Path="GePro.DataAccess/GePro.DataAccess.csproj" />
+  <Project Path="GePro.Model/GePro.Model.csproj" />
+  <Project Path="GePro/GePro.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
