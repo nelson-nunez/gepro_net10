@@ -9,6 +9,16 @@ Bitácora de los pasos seguidos para levantar el proyecto desde cero: Web API, E
 3. Crear biblioteca de clases.
 4. Referenciar la biblioteca de clases en el proyecto principal (de inicio).
 5. Crear el modelo y los DTOs planos.
+6. **Depurar sin Docker**: aunque el proyecto tenga soporte Docker, el perfil de inicio activo puede ser `Container (Dockerfile)`. Para evitarlo:
+   - En `GePro.API/GePro.API.csproj.user` poner `<ActiveDebugProfile>https</ActiveDebugProfile>` (o elegir `https`/`http` en el desplegable junto al botón de inicio de Visual Studio).
+   - Desde terminal: `dotnet run --project GePro.API --launch-profile https`.
+   - El `Dockerfile` y el perfil `Container (Dockerfile)` se conservan para cuando se quiera probar el contenedor.
+7. **Swagger en la API** (spec `001-swagger-api`):
+   - Paquete `Swashbuckle.AspNetCore.SwaggerUI`; el documento OpenAPI sale de `AddOpenApi()` / `MapOpenApi()` (`/openapi/v1.json`).
+   - En `Program.cs`, dentro de `if (app.Environment.IsDevelopment())`: `app.UseSwaggerUI(o => o.SwaggerEndpoint("/openapi/v1.json", "GePro API v1"))`. UI en `/swagger`, solo en Development.
+   - En `launchSettings.json`, perfiles `http` y `https`: `"launchBrowser": true` y `"launchUrl": "swagger"`, para que F5 lo abra.
+   - Para que abra en Chrome: Visual Studio → flecha junto a iniciar → *Browse With…* → Chrome → *Set as Default* (el navegador no se define en `launchSettings.json`).
+   - Tests de integración: `Microsoft.AspNetCore.Mvc.Testing` y `public partial class Program;` al final de `Program.cs`.
 
 ## 2. Base de datos y Entity Framework Core
 
@@ -84,3 +94,41 @@ Referencia: [Logging with Serilog in ASP.NET Core Web API](https://www.codeproje
 31. En `appsettings` grabar las configuraciones comunes, como el link de conexión y funciones que también se pueden definir en `Program.cs`.
 32. Crear la clase `ExceptionHandlingMiddleware`, donde se atrapan las excepciones, se las formatea y se las enriquece a través del contexto antes de guardarlas en la base de log.
 33. Agregar en la clase `Startup.cs`, en el método `Configure`, el uso del middleware para la captura de excepciones.
+
+## 8. Depuración de la API sin ventana de consola (Visual Studio)
+
+Problema: al depurar con el perfil `https`/`http` (Kestrel, `commandName: "Project"`), Visual Studio abre una consola con `Now listening on: https://localhost:7002` que no cumple ninguna función. Poner `<OutputType>WinExe</OutputType>` en el `.csproj` o activar "Cerrar la consola automáticamente" **no** la elimina.
+
+Solución: usar un perfil **IIS Express**, que hospeda la API en proceso y no abre consola.
+
+34. En `GePro.API/Properties/launchSettings.json` agregar el bloque `iisSettings` y el perfil `IIS Express`:
+
+    ```json
+    {
+      "iisSettings": {
+        "windowsAuthentication": false,
+        "anonymousAuthentication": true,
+        "iisExpress": {
+          "applicationUrl": "http://localhost:5074",
+          "sslPort": 44370
+        }
+      },
+      "profiles": {
+        "IIS Express": {
+          "commandName": "IISExpress",
+          "launchBrowser": true,
+          "launchUrl": "swagger",
+          "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+          }
+        }
+      }
+    }
+    ```
+
+35. Seleccionar **IIS Express** en el desplegable de inicio de Visual Studio (queda guardado en `GePro.API.csproj.user` como `<ActiveDebugProfile>IIS Express</ActiveDebugProfile>`) y ejecutar con F5.
+
+Notas:
+- La API queda en `https://localhost:44370` (no en el 7002); actualizar la URL del frontend si apunta al puerto anterior.
+- Requiere la carga de trabajo "ASP.NET y desarrollo web" de Visual Studio (incluye IIS Express).
+- Para volver a Kestrel, elegir el perfil `https`; la consola reaparece.

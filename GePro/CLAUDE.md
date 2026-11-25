@@ -34,7 +34,9 @@ Dependencias permitidas: `API → Business → DataAccess → Model`. Nunca al r
 | Aprobar | el usuario | `Estado: Aprobada`. |
 | Planificar | `/to-tasks` | `Docs/specs/NNN-nombre/tasks.md`. |
 | Implementar | `/tdd` | Una tarea: red → green → refactor. |
-| Revisar y cerrar | `/sdd` | Checklist de arquitectura; `Estado: Implementada`. |
+| Revisar y cerrar | `/sdd` | Checklist de arquitectura; `Estado: Implementada`; push con aprobación. |
+
+Ramas y commits en cada fase los hace `/commit-sdd` (invocado por `to-spec`, `tdd` y `sdd`).
 
 Reglas:
 - No escribir código de producción si no existe una spec con `Estado: Aprobada`.
@@ -73,10 +75,10 @@ cd GePro && npm test
 - **Datos**: acceso solo vía repositorios + Unit of Work. Cambios de esquema = migración EF Core.
 - **Tests**: un test por criterio de aceptación. Nombres `Metodo_Escenario_Resultado`.
 - **Frontend**: módulos por feature (`NgModule`), servicios para HTTP, sin lógica de negocio en componentes.
-- **Git**: commits pequeños, uno por tarea de `tasks.md`.
+- **Git** (lo gestiona `/commit-sdd`): una rama por spec, `feature/NNN-nombre`; commits pequeños, uno por tarea de `tasks.md`, formato `tipo(NNN): descripción`. Spec nueva → rama + commit + push. Código → push solo con build/tests en verde y aprobación del desarrollador. Nunca implementar en `main`.
 
 ## Documentos de referencia
 
 - `CONTEXT.md` — glosario del dominio.
-- `Docs/Guia-Harness.md` — guía para el usuario: qué hace cada archivo del harness y dónde poner cada cosa.
-- `Docs/ProjectScaffold.md` — bitácora de scaffold (EF Core, Repository/UoW, AutoMapper, JWT, Serilog).
+- `Personal/Guia-Harness.md` — guía para el usuario: qué hace cada archivo del harness y dónde poner cada cosa.
+- `Personal/ProjectScaffold.md` — bitácora de scaffold (EF Core, Repository/UoW, AutoMapper, JWT, Serilog).

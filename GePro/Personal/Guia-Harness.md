@@ -13,26 +13,35 @@ El harness es el conjunto de documentos y skills que le dicen a Claude **qué co
 ## 2. Mapa de archivos
 
 ```
-GePro/
-├── CLAUDE.md                       ← Lo primero que lee el agente
-├── CONTEXT.md                      ← Glosario del dominio
-├── Docs/
+GePro/                              ← raíz del repo (GePro.slnx)
+├── Solution Items/                 ← Documentos de raíz del harness
+│   ├── CLAUDE.md                   ← Lo primero que lee el agente
+│   └── CONTEXT.md                  ← Glosario del dominio
+├── Strict Personal/                ← Documentos personales / de apoyo
 │   ├── Guia-Harness.md             ← Este documento
+│   ├── ProjectScaffold.md          ← Bitácora de scaffold
+│   └── Angular.md                  ← Notas de frontend (no son reglas)
+├── Docs/
+│   ├── Readme.md · ProjectStructure.md
 │   ├── architecture/               ← Cómo debe ser el código
 │   │   ├── overview.md
 │   │   ├── model.md · data-access.md · business.md · api.md · angular.md
 │   ├── adr/                        ← Decisiones de arquitectura (el porqué)
 │   │   └── 0001-arquitectura-en-capas.md
 │   └── specs/                      ← Qué se construye, feature por feature
-│       ├── _template/{spec.md, tasks.md}
-│       └── NNN-nombre/{spec.md, tasks.md}
-└── .claude/skills/                 ← Los comandos del flujo
-    ├── sdd/ · grill-with-docs/ · to-spec/ · to-tasks/ · tdd/
+│       └── _template/{spec.md, tasks.md}   (aún no hay specs de features)
+├── .claude/skills/                 ← Los comandos del flujo
+│   └── sdd/ · grill-with-docs/ · to-spec/ · to-tasks/ · tdd/
+├── GePro.API · GePro.Business · GePro.DataAccess · GePro.Model
+├── GePro.API.Tests · GePro.Business.Tests
+└── GePro/                          ← Frontend Angular (GePro.esproj)
 ```
+
+> **Nota:** `CLAUDE.md` y `CONTEXT.md` están ahora en `Solution Items/`; esta guía, `ProjectScaffold.md` y `Angular.md` en `Strict Personal/`. `CLAUDE.md`, `Docs/Readme.md` y `GePro.slnx` aún citan las rutas antiguas (`Docs/Guia-Harness.md`, `Docs/ProjectScaffold.md`, etc.): actualízalas o devuelve los archivos a su sitio. Claude Code solo carga `CLAUDE.md` automáticamente si está en la raíz del repo.
 
 ## 3. Qué hace cada archivo
 
-### Raíz
+### `Solution Items/`
 
 | Archivo | Función | Quién lo edita |
 |---|---|---|
@@ -81,15 +90,15 @@ Los criterios de aceptación son la definición de "terminado": cada uno acaba e
 
 | Quiero… | Lo pongo en… |
 |---|---|
-| Definir una palabra nueva del dominio | `CONTEXT.md` (antes de usarla en código) |
+| Definir una palabra nueva del dominio | `Solution Items/CONTEXT.md` (antes de usarla en código) |
 | Escribir lo que hará una feature | `Docs/specs/NNN-nombre/spec.md` |
 | Planificar cómo implementarla | `Docs/specs/NNN-nombre/tasks.md` |
 | Registrar una decisión técnica importante | Nuevo `Docs/adr/NNNN-titulo.md` |
 | Cambiar cómo se escribe el código de una capa | La guía de esa capa en `Docs/architecture/` (y un ADR si es un cambio de fondo) |
-| Cambiar comandos o reglas generales | `CLAUDE.md` |
+| Cambiar comandos o reglas generales | `Solution Items/CLAUDE.md` |
 | Añadir un paso o comando al flujo | Nueva carpeta en `.claude/skills/<nombre>/SKILL.md` |
-| Guardar el historial de cómo se montó el proyecto | `Docs/ProjectScaffold.md` (bitácora) |
-| Notas específicas del frontend que no son reglas | `Docs/Angular.md` |
+| Guardar el historial de cómo se montó el proyecto | `Strict Personal/ProjectScaffold.md` (bitácora) |
+| Notas específicas del frontend que no son reglas | `Strict Personal/Angular.md` |
 
 Regla práctica: **reglas permanentes** van en `architecture/`; **decisiones y su razón** en `adr/`; **lo que se construye ahora** en `specs/`; **lenguaje** en `CONTEXT.md`.
 
@@ -115,7 +124,7 @@ Si algo cambia a mitad de camino (un requisito, una regla), **se edita la spec p
 
 ## 7. Preguntas frecuentes
 
-**¿Qué hago con los documentos que ya tenía en `Docs/`?** Se conservan. `ProjectScaffold.md` sigue siendo la bitácora. `ProjectStructure.md` puede limitarse a apuntar a `architecture/overview.md`. `Readme.md` debería enlazar esta guía.
+**¿Dónde quedaron los documentos que estaban en `Docs/`?** `ProjectScaffold.md` (bitácora) y `Angular.md` están en `Strict Personal/`. `Docs/ProjectStructure.md` solo apunta a `architecture/overview.md`. `Docs/Readme.md` debe enlazar esta guía (corrige la ruta del enlace).
 
 **¿Puedo cambiar una regla de arquitectura?** Sí: edita la guía de la capa y, si es una decisión de fondo, añade un ADR. No lo hagas dentro de una tarea de feature sin avisar.
 

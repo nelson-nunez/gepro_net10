@@ -12,6 +12,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "GePro API v1");
+        options.RoutePrefix = "swagger";
+    });
 }
 
 app.UseHttpsRedirection();
@@ -21,3 +26,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Necesario para WebApplicationFactory<Program> en los tests de integración.
+public partial class Program;

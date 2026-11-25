@@ -1,6 +1,6 @@
 # NNN — Nombre de la feature
 
-- **Estado**: Borrador | Aprobada | Implementada
+- **Estado**: Borrador | Aprobada | Implementada <!-- dejar UN solo valor, sin texto extra: la skill /sdd lo lee literalmente -->
 - **Fecha**: AAAA-MM-DD
 - **Capas afectadas**: Model / DataAccess / Business / API / Angular
 

@@ -15,7 +15,8 @@ description: Convierte lo acordado en la conversación en una spec funcional en 
    - Cada criterio de aceptación es verificable y en formato Dado / Cuando / Entonces.
    - Alcance con lista explícita de "Fuera".
    - Estado inicial: `Borrador`.
-5. Muestra al usuario un resumen corto y pide aprobación. Al aprobar, cambia `Estado` a `Aprobada`.
+5. Ejecuta `/commit-sdd` (caso A): crea la rama `feature/NNN-nombre`, commitea la spec y la pushea.
+6. Muestra al usuario un resumen corto y pide aprobación. Al aprobar, cambia `Estado` a `Aprobada` y vuelve a ejecutar `/commit-sdd` (caso A) para commitear y pushear el cambio.
 
 ## Reglas
 

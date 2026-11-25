@@ -29,4 +29,4 @@ description: Implementa una tarea de tasks.md con ciclo red-green-refactor, un t
 1. Ejecuta `dotnet build GePro.slnx` y `dotnet test GePro.slnx` (y `npm test` si tocaste Angular).
 2. Pasa la checklist de revisión de `/sdd` (sección 2). No marques ☑ si algo falla.
 3. Marca la tarea como hecha en `tasks.md` (☑).
-4. Propón el commit: uno por tarea, con mensaje que cite la spec (`feat(NNN): …`).
+4. Ejecuta `/commit-sdd` (caso B): commit en la rama `feature/NNN-nombre`, uno por tarea, con mensaje que cite la spec (`feat(NNN): …`). Sin push: el push lo aprueba el desarrollador al cerrar la feature.

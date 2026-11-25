@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "GePro.API\\GePro.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GePro\\GePro.UI.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
