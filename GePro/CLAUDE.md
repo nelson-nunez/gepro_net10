@@ -11,11 +11,13 @@ Solución **.NET 10 (Web API) + Angular 19 (NgModules)**. Se trabaja con **SDD**
 | `GePro.DataAccess` | EF Core, DbContext, Repository / Unit of Work, migraciones. |
 | `GePro.Model` | Entidades, DTOs, enums, excepciones de negocio. Sin dependencias. |
 | `GePro.API.Tests`, `GePro.Business.Tests` | xUnit. |
-| `GePro/` | Frontend Angular (`.esproj`). |
+| `GePro/` | Frontend Angular (`GePro.UI.esproj`). |
 | `Docs/architecture/` | **Cómo debe ser el código de cada capa** (fuente de verdad). |
 | `Docs/adr/` | Decisiones de arquitectura. |
 | `Docs/specs/` | Specs y tareas por feature. |
-| `.claude/skills/` | Skills del flujo SDD. |
+| `.claude/skills/` | Skills del flujo SDD (`sdd`, `grill-with-docs`, `to-spec`, `to-tasks`, `tdd`, `commit-sdd`). |
+| `.claude/settings.json`, `.claude/hooks/verify.sh` | Permisos y hook `Stop`: al terminar corre `dotnet build` y `dotnet test`; si fallan, devuelve el error para corregirlo. |
+| `Personal/` | Notas y bitácora del usuario (guía del harness, scaffold, Angular). No son reglas. |
 
 Dependencias permitidas: `API → Business → DataAccess → Model`. Nunca al revés. `API` no toca `DataAccess` directamente salvo en el registro de DI.
 

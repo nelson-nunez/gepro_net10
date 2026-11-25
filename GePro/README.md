@@ -1,59 +1,45 @@
 # GePro
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+Solución **.NET 10 (Web API) + Angular 19 (NgModules)** desarrollada con **SDD** (Spec-Driven Development): ninguna feature se codifica sin una spec aprobada.
 
-## Development server
+## Estructura
 
-To start a local development server, run:
+| Proyecto | Contenido |
+|---|---|
+| `GePro.API` | Controllers, middlewares, DI, JWT, Serilog. |
+| `GePro.Business` | Servicios y reglas de negocio. |
+| `GePro.DataAccess` | EF Core, repositorios, Unit of Work, migraciones. |
+| `GePro.Model` | Entidades, DTOs, enums, excepciones de negocio. |
+| `GePro.API.Tests`, `GePro.Business.Tests` | Tests xUnit. |
+| `GePro/` | Frontend Angular (`GePro.UI.esproj`). |
 
-```bash
-ng serve
-```
+Dependencias: `API → Business → DataAccess → Model`.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Comandos
 
 ```bash
-ng generate --help
+dotnet build GePro.slnx
+dotnet test GePro.slnx
+dotnet run --project GePro.API
+cd GePro && npm install && npm start     # Angular
+cd GePro && npm test
 ```
 
-## Building
+Con la API en `Development`, Swagger UI está en `/swagger`.
 
-To build the project run:
+## Flujo de trabajo (SDD)
 
-```bash
-ng build
+```
+/sdd  →  grill-with-docs → to-spec → (apruebas) → to-tasks → tdd (por tarea) → revisión → cierre
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Una spec = una rama `feature/NNN-nombre`. Un commit por tarea (`feat(NNN): …`).
+- La spec nueva se pushea al crearla; el código se pushea tras build y tests en verde y aprobación del desarrollador.
+- Comandos y reglas: [`CLAUDE.md`](CLAUDE.md) · Guía para el desarrollador: [`Personal/Guia-Harness.md`](Personal/Guia-Harness.md).
 
-## Running unit tests
+## Documentación
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [`CONTEXT.md`](CONTEXT.md): glosario del dominio.
+- [`Docs/architecture/`](Docs/architecture/overview.md): reglas de código por capa.
+- [`Docs/adr/`](Docs/adr/): decisiones de arquitectura.
+- [`Docs/specs/`](Docs/specs/): specs y tareas por feature.

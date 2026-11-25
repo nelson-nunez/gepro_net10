@@ -13,3 +13,6 @@ GePro/GePro.Model/bin/
 GePro/GePro.Model/obj/
 GePro/GePro/.vscode/
 GePro/GePro/obj/
+
+# Configuración local de Visual Studio
+*.user
