@@ -6,13 +6,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>9e705b0e-d503-492e-8de0-5fcfc0d1472f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.14" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="11.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.3.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\GePro.Model\GePro.Model.csproj" />
+    <ProjectReference Include="..\GePro.Business\GePro.Business.csproj" />
+    <ProjectReference Include="..\GePro.DataAccess\GePro.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

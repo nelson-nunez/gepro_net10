@@ -7,9 +7,21 @@ namespace GePro.API.Tests.Swagger;
 
 public class SwaggerTests
 {
+    // La API exige connection string y secreto JWT al arrancar; en tests se proveen valores ficticios.
+    private static readonly Dictionary<string, string> ConfiguracionDePrueba = new()
+    {
+        ["ConnectionStrings:DefaultConnection"] = "Server=(local);Database=GeProTests;Integrated Security=true;TrustServerCertificate=true",
+        ["JwtTokenConfig:Secret"] = "clave-solo-para-tests-0123456789-abcdef",
+    };
+
     private static HttpClient CrearCliente(string entorno) =>
         new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(b => b.UseEnvironment(entorno))
+            .WithWebHostBuilder(b =>
+            {
+                b.UseEnvironment(entorno);
+                foreach (var (clave, valor) in ConfiguracionDePrueba)
+                    b.UseSetting(clave, valor);
+            })
             .CreateClient();
 
     [Fact]

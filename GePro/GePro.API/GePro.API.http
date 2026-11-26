@@ -1,6 +1,14 @@
 @GePro.API_HostAddress = http://localhost:5074
 
-GET {{GePro.API_HostAddress}}/weatherforecast/
+POST {{GePro.API_HostAddress}}/api/Authentication/Authenticate
+Content-Type: application/json
+
+{ "userName": "admin", "password": "admin" }
+
+###
+
+GET {{GePro.API_HostAddress}}/api/provinces
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
