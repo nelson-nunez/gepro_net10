@@ -18,4 +18,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GePro.Business\GePro.Business.csproj" />
+    <ProjectReference Include="..\GePro.DataAccess\GePro.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
