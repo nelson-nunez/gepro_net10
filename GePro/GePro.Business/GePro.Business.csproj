@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GePro.DataAccess\GePro.DataAccess.csproj" />
     <ProjectReference Include="..\GePro.Model\GePro.Model.csproj" />
   </ItemGroup>
 
