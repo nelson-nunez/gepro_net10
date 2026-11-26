@@ -1,12 +1,30 @@
+using GePro.API.Extensions;
+using GePro.API.Middleware;
+using GePro.Business;
+using GePro.DataAccess;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog((context, logger) => logger
+    .ReadFrom.Configuration(context.Configuration)
+    .WriteTo.Console());
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<DomainExceptionHandler>();
+
+builder.Services.AddDataAccess(builder.Configuration.GetConnectionString("DefaultConnection")!);
+builder.Services.AddBusiness();
+builder.Services.AddJwtAuthentication();
+
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -21,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
