@@ -400,6 +400,7 @@ namespace GePro.DataAccess
                 {
                     Id = 1,
                     PersonId = 1,
+                    Code = "CLI-0001",
                     CreatedBy = "System",
                     Created = SeedDate
                 }
