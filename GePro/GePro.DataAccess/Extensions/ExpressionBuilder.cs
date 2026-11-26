@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace GePro.DataAccess.Extensions
 {
-    public enum OperatorComparer
+    internal enum OperatorComparer
     {
         Contains,
         StartsWith,
@@ -17,7 +17,7 @@ namespace GePro.DataAccess.Extensions
         NotEqual = ExpressionType.NotEqual
     }
 
-    public static class ExpressionBuilder
+    internal static class ExpressionBuilder
     {
         public static Expression<Func<T, bool>> BuildPredicate<T>(object value, OperatorComparer comparer, params string[] properties)
         {

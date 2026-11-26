@@ -1,19 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using GePro.Model.Base;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
+using GePro.Model.Base;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace GePro.DataAccess
 {
-    public static class DbContextExtension
+    internal static class DbContextExtension
     {
-        public static void AddSoftDeleteQueryFilter(this IMutableEntityType entityData)
+        private static readonly MethodInfo SoftDeleteFilterMethod =
+            typeof(DbContextExtension).GetMethod(nameof(GetSoftDeleteFilter), BindingFlags.NonPublic | BindingFlags.Static)!;
+
+        /// <summary>Oculta los registros con borrado lógico e indexa la columna Deleted.</summary>
+        public static void AddSoftDeleteQueryFilter(this IMutableEntityType entityType)
         {
-            var methodToCall = typeof(DbContextExtension).GetMethod(nameof(GetSoftDeleteFilter), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(entityData.ClrType);
-            var filter = methodToCall.Invoke(null, new object[] { });
-            entityData.SetQueryFilter((LambdaExpression)filter);
-            var prop = entityData.FindProperty(nameof(ISoftDelete.Deleted));
-            entityData.AddIndex(prop);
+            var filter = (LambdaExpression)SoftDeleteFilterMethod.MakeGenericMethod(entityType.ClrType).Invoke(null, null)!;
+            entityType.SetQueryFilter(filter);
+            entityType.AddIndex(entityType.FindProperty(nameof(ISoftDelete.Deleted))!);
         }
 
         private static LambdaExpression GetSoftDeleteFilter<TEntity>() where TEntity : class, ISoftDelete

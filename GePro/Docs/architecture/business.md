@@ -14,7 +14,7 @@ Depende de `Model` y de las **interfaces** de `DataAccess`. Aquí viven las regl
   - sin permiso → `ForbiddenException`
 - Validación de entrada: primero formato (FluentValidation o validaciones explícitas), luego reglas de negocio que consultan datos.
 - Una operación = una transacción: leer, validar, modificar y llamar **una vez** a `IUnitOfWork.SaveChangesAsync(ct)`.
-- Usuario actual: mediante `ICurrentUser` (interfaz definida en `Business`, implementada en `API`).
+- Usuario actual: mediante `ICurrentUser` (interfaz definida en `DataAccess`, porque el Unit of Work la usa para la auditoría; implementada en `API`).
 - Sin `static` con estado, sin acceso al reloj directo: usar `TimeProvider`.
 - Todos los métodos `async` con `CancellationToken`.
 
