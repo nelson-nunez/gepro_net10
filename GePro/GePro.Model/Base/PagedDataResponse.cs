@@ -24,6 +24,6 @@ namespace GePro.Model.Base
 
         public int RowCount { get; set; }
 
-        public IList<T> Results { get; set; }
+        public IList<T> Results { get; set; } = new List<T>();
     }
 }

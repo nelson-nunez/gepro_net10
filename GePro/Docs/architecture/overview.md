@@ -57,7 +57,7 @@ HTTP → Middleware (Serilog, errores) → [Authorize] Controller
 
 | Tema | Decisión |
 |---|---|
-| **Errores** | Las reglas rotas lanzan excepciones de `Model/Exceptions` (`NotFoundException`, `ValidationException`, `ConflictException`, `ForbiddenException`). Un middleware en `API` las convierte en `ProblemDetails` (404, 400, 409, 403). Cualquier otra excepción → 500 sin detalle interno. |
+| **Errores** | Las reglas rotas lanzan excepciones de `Model/Exceptions` (`NotFoundException`, `ValidationException`, `ConflictException`, `ForbiddenException`, `UnauthorizedException`). Un middleware en `API` las convierte en `ProblemDetails` (404, 400, 409, 403, 401). Cualquier otra excepción → 500 sin detalle interno. |
 | **Autenticación** | JWT Bearer. `[Authorize]` por defecto en controllers; `[AllowAnonymous]` solo donde la spec lo pida. El usuario actual llega a `Business` mediante una abstracción (`ICurrentUser`), nunca con `HttpContext`. |
 | **Logging** | Serilog. Sin contraseñas, tokens ni datos personales. Mensajes con plantilla estructurada. |
 | **Transacciones** | Una operación de negocio = un `IUnitOfWork.SaveChangesAsync()` al final del servicio. |

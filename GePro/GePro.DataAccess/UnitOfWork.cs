@@ -10,15 +10,15 @@ namespace GePro.DataAccess
 {
     public class UnitOfWork(DbModelContext context, ICurrentUser currentUser, TimeProvider clock) : IUnitOfWork
     {
-        public IRepository<AppUser> AppUsers { get; } = new Repository<AppUser>(context);
+        public IAppUserRepository AppUsers { get; } = new AppUserRepository(context);
         public IRepository<Role> Roles { get; } = new Repository<Role>(context);
         public IRepository<Gender> Genders { get; } = new Repository<Gender>(context);
         public IRepository<Person> Persons { get; } = new Repository<Person>(context);
-        public IRepository<Customer> Customers { get; } = new Repository<Customer>(context);
+        public ICustomerRepository Customers { get; } = new CustomerRepository(context);
         public IRepository<Employee> Employees { get; } = new Repository<Employee>(context);
         public IRepository<Province> Provinces { get; } = new Repository<Province>(context);
-        public IRepository<City> Cities { get; } = new Repository<City>(context);
-        public IRepository<Neighborhood> Neighborhoods { get; } = new Repository<Neighborhood>(context);
+        public ICityRepository Cities { get; } = new CityRepository(context);
+        public INeighborhoodRepository Neighborhoods { get; } = new NeighborhoodRepository(context);
         public IRepository<Address> Addresses { get; } = new Repository<Address>(context);
 
         public async Task<int> SaveChangesAsync(CancellationToken ct)

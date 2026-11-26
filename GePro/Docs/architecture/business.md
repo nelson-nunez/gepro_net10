@@ -12,6 +12,7 @@ Depende de `Model` y de las **interfaces** de `DataAccess`. Aquí viven las regl
   - dato inválido → `ValidationException` (con la lista de errores por campo)
   - duplicado o estado incompatible → `ConflictException`
   - sin permiso → `ForbiddenException`
+  - credenciales inválidas → `UnauthorizedException`
 - Validación de entrada: primero formato (FluentValidation o validaciones explícitas), luego reglas de negocio que consultan datos.
 - Una operación = una transacción: leer, validar, modificar y llamar **una vez** a `IUnitOfWork.SaveChangesAsync(ct)`.
 - Usuario actual: mediante `ICurrentUser` (interfaz definida en `DataAccess`, porque el Unit of Work la usa para la auditoría; implementada en `API`).
