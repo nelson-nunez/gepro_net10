@@ -1,6 +1,6 @@
 # 002 — Mapeo con AutoMapper
 
-- **Estado**: Aprobada
+- **Estado**: Implementada
 - **Aprobación**: explícita del usuario (2026-11-27), con las decisiones D-01 a D-03 de la sección 13
 - **Fecha**: 2026-11-27
 - **Capas afectadas**: Business / API (registro en DI) / Tests
