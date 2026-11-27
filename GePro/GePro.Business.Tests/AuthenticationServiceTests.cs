@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using GePro.Business.Security;
 using GePro.Business.Services;
+using GePro.Business.Tests.Mapping;
 using GePro.DataAccess;
 using GePro.DataAccess.Repositories;
 using GePro.Model.Base;
@@ -25,7 +26,7 @@ namespace GePro.Business.Tests
                 PasswordHash = _passwords.Hash("Secreta123"),
                 Role = new Role { Name = "Admin", Permissions = "FullAccess" },
             };
-            return new AuthenticationService(new FakeUnitOfWork(user), _passwords);
+            return new AuthenticationService(new FakeUnitOfWork(user), _passwords, MapperFactory.CreateMapper());
         }
 
         [Fact]

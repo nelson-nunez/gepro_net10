@@ -23,7 +23,7 @@ GePro.API/
 - Códigos explícitos con `[ProducesResponseType]` (`ProducesResponseType<T>`); errores como `ProblemDetails`.
 - **Errores**: `DomainExceptionHandler` (`IExceptionHandler`, registrado con `AddExceptionHandler` y `UseExceptionHandler()`) traduce `NotFoundException` → 404 y `UnauthorizedException` → 401. Cualquier otra excepción sigue al 500 genérico. Los controllers no usan `try/catch`.
 - **Auth**: JWT Bearer. `[Authorize]` en los controllers, `[AllowAnonymous]` solo en `AuthenticationController`. `AddJwtAuthentication()` valida al arrancar `JwtTokenConfig` (`Secret` ≥ 32 caracteres, `Issuer`, `Audience`) y registra `ICurrentUser` (`HttpCurrentUser`) y `IJwtTokenService`.
-- **DTOs en la frontera**: los controllers devuelven DTOs de `GePro.Model.DTO` o contratos de `Contracts/`. El mapeo entidad → DTO ocurre en `Business`. No hay AutoMapper.
+- **DTOs en la frontera**: los controllers devuelven DTOs de `GePro.Model.DTO` o contratos de `Contracts/`. El mapeo entidad → DTO ocurre en `Business` (AutoMapper); `API` no referencia AutoMapper.
 - **DI**: `AddDataAccess(connectionString)`, `AddBusiness()` y `AddJwtAuthentication()` se llaman desde `Program.cs`. `API` referencia `DataAccess` solo para eso y para `ICurrentUser`.
 - **Serilog**: `UseSerilog` con `ReadFrom.Configuration` + consola; `UseSerilogRequestLogging()`. El sink SQL (`Serilog.Sinks.MSSqlServer`) se declara en `appsettings`. Sin datos sensibles.
 - **OpenAPI/Swagger**: `AddOpenApi` con `BearerSecurityTransformer` (esquema Bearer JWT, botón *Authorize*). `MapOpenApi()` (`/openapi/v1.json`) y `UseSwaggerUI` (`/swagger`) solo en `Development`.

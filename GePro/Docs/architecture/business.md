@@ -7,6 +7,7 @@ Depende de `Model` y de `DataAccess` (usa `IUnitOfWork`; paquete `Microsoft.Exte
 ```
 GePro.Business/
   DependencyInjection.cs         # AddBusiness()
+  Mapping/                       # un <Entidad>Profile de AutoMapper por entidad
   Services/                      # interfaz + implementación en el mismo archivo
     AuthenticationService.cs, CustomerService.cs, ReferenceDataServices.cs
   Security/IPasswordService.cs, PasswordService.cs
@@ -18,7 +19,7 @@ GePro.Business/
 
 - Un servicio por agregado: `IXxxService` / `XxxService`, registrado como `Scoped` en `AddBusiness()` (`PasswordService` es `Singleton`).
 - El servicio recibe `IUnitOfWork` (nunca `DbContext`) y devuelve **DTOs**. No conoce `HttpContext` ni `IActionResult`.
-- **Mapeo entidad → DTO a mano** dentro del servicio (método privado `ToDto`). No hay AutoMapper.
+- **Mapeo entidad → DTO con AutoMapper 14**: un `<Entidad>Profile` por entidad en `GePro.Business/Mapping/` (registrados en `AddBusiness()`); el servicio inyecta `IMapper` y llama a `mapper.Map<...>`. Aplanado por nombre y `ForMember` solo donde el nombre difiere. Sin `ProjectTo` (los repositorios no exponen `IQueryable`). Un test `AssertConfigurationIsValid()` falla si un DTO queda con propiedades sin origen.
 - Las reglas rotas se señalan con excepciones de `Model/Exceptions`:
   - no existe → `NotFoundException`
   - credenciales inválidas o sin sesión → `UnauthorizedException`
@@ -31,13 +32,13 @@ GePro.Business/
 ## Ejemplo
 
 ```csharp
-public class CustomerService(IUnitOfWork uow) : ICustomerService
+public class CustomerService(IUnitOfWork uow, IMapper mapper) : ICustomerService
 {
     public async Task<CustomerDTO> GetByIdAsync(int id, CancellationToken ct)
     {
         var customer = await uow.Customers.GetDetailAsync(id, ct)
             ?? throw new NotFoundException($"No existe el cliente {id}.");
-        return ToDto(customer);
+        return mapper.Map<CustomerDTO>(customer);
     }
 
     public async Task DeleteAsync(int id, CancellationToken ct)

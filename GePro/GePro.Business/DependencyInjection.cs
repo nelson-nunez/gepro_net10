@@ -8,6 +8,8 @@ namespace GePro.Business
     {
         public static IServiceCollection AddBusiness(this IServiceCollection services)
         {
+            services.AddAutoMapper(configuration => { }, typeof(DependencyInjection).Assembly);
+
             services.AddSingleton<IPasswordService, PasswordService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();

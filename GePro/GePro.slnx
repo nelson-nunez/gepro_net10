@@ -20,6 +20,7 @@
   </Folder>
   <Folder Name="/Docs/specs/002-automapper/">
     <File Path="Docs/specs/002-automapper/spec.md" />
+    <File Path="Docs/specs/002-automapper/tasks.md" />
   </Folder>
   <Folder Name="/Docs/specs/003-fluentvalidation/">
     <File Path="Docs/specs/003-fluentvalidation/spec.md" />

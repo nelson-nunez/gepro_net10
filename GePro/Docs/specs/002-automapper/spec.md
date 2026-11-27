@@ -1,6 +1,6 @@
 # 002 — Mapeo con AutoMapper
 
-- **Estado**: Aprobada
+- **Estado**: Implementada
 - **Aprobación**: explícita del usuario (2026-11-27), con las decisiones D-01 a D-03 de la sección 13
 - **Fecha**: 2026-11-27
 - **Capas afectadas**: Business / API (registro en DI) / Tests
@@ -136,12 +136,10 @@ Cada criterio se convierte en al menos un test.
 
 ## 13. Decisiones y preguntas abiertas
 
-Decisiones tomadas (2026-11-27):
+Decisiones tomadas (2026-11-27); sin preguntas abiertas:
 
 - **D-01** — Versión: AutoMapper **14.x** (sin clave de licencia).
 - **D-02** — El registro (`AddAutoMapper`) va en `AddBusiness()`.
 - **D-03** — Se crea ya el Profile de `Employee` → `EmployeeDTO` (con test, sin servicio ni endpoint).
 
-Pendiente:
-
-- **Q-04** — Al instalar AutoMapper 14.x, comprobar si NuGet audit (`dotnet list package --vulnerable`) reporta un aviso de seguridad para esa versión. Si lo reporta, decidir entre fijar la versión con la excepción documentada, subir de versión (puede exigir licencia) o usar otra librería.
+- **D-06** — Q-04 resuelta (2026-11-27): `dotnet list package --vulnerable` reporta para AutoMapper 14.0.0 tres avisos de severidad Alta (GHSA-rvv3-g6hj-g44x, GHSA-gpwp-5797-mjff, GHSA-6vhm-j9h7-f9gh). El usuario acepta el riesgo y se usa 14.0.0 con los tres avisos suprimidos de forma explícita (`NuGetAuditSuppress` centralizado en `Directory.Build.props`, con comentario, porque los proyectos que referencian a `GePro.Business` reciben el aviso de forma transitiva). El detalle de cada aviso no se revisó. Revisar esta excepción si AutoMapper empieza a recibir datos no confiables o si se decide actualizar de versión.
