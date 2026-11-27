@@ -1,3 +1,4 @@
+using AutoMapper;
 using GePro.DataAccess;
 using GePro.Model.DTO;
 
@@ -57,12 +58,12 @@ namespace GePro.Business.Services
         Task<IReadOnlyList<GenderDTO>> ListAsync(CancellationToken ct);
     }
 
-    public class GenderService(IUnitOfWork uow) : IGenderService
+    public class GenderService(IUnitOfWork uow, IMapper mapper) : IGenderService
     {
         public async Task<IReadOnlyList<GenderDTO>> ListAsync(CancellationToken ct)
         {
             var genders = await uow.Genders.ListAsync(null, ct);
-            return genders.Select(g => new GenderDTO { Id = g.Id, Name = g.Name }).ToList();
+            return mapper.Map<IReadOnlyList<GenderDTO>>(genders);
         }
     }
 }

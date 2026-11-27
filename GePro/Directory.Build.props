@@ -1,0 +1,14 @@
+<Project>
+
+  <!--
+    Excepción aceptada por el usuario (spec 002, decisión D-06): AutoMapper 14.0.0 tiene 3 avisos de
+    severidad Alta. Se suprimen aquí, en un solo lugar, porque los proyectos que referencian a
+    GePro.Business los reciben de forma transitiva. Quitar al actualizar AutoMapper.
+  -->
+  <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-rvv3-g6hj-g44x" />
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-gpwp-5797-mjff" />
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-6vhm-j9h7-f9gh" />
+  </ItemGroup>
+
+</Project>
