@@ -1,3 +1,4 @@
+using AutoMapper;
 using GePro.Business.Security;
 using GePro.DataAccess;
 using GePro.Model.DTO;
@@ -11,7 +12,7 @@ namespace GePro.Business.Services
         Task<AuthenticatedUserDTO> AuthenticateAsync(string userName, string password, CancellationToken ct);
     }
 
-    public class AuthenticationService(IUnitOfWork uow, IPasswordService passwords) : IAuthenticationService
+    public class AuthenticationService(IUnitOfWork uow, IPasswordService passwords, IMapper mapper) : IAuthenticationService
     {
         public async Task<AuthenticatedUserDTO> AuthenticateAsync(string userName, string password, CancellationToken ct)
         {
@@ -21,13 +22,7 @@ namespace GePro.Business.Services
             if (user is null || !passwords.Verify(user.PasswordHash, password))
                 throw new UnauthorizedException("Credenciales inválidas.");
 
-            return new AuthenticatedUserDTO
-            {
-                Id = user.Id,
-                Name = user.Name,
-                RoleName = user.Role.Name,
-                Permissions = user.Role.Permissions,
-            };
+            return mapper.Map<AuthenticatedUserDTO>(user);
         }
     }
 }
