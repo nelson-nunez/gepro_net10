@@ -73,6 +73,7 @@ cd GePro && npm test
 
 ## Convenciones (resumen; el detalle está en `Docs/architecture/`)
 
+- **Legibilidad primero**: se prioriza que el código se lea fácil sobre que sea corto o ingenioso. Cuerpos de método en bloque (sin `=>` en miembros), un paso por línea con variables de nombre claro, métodos pequeños con nombre que explica su intención, sin abreviaturas ni código muerto.
 - **Backend**: async/await con `CancellationToken`, DTOs en la frontera de la API (AutoMapper), sin exponer entidades. Errores como excepciones de `Model/Exceptions` → `ProblemDetails`. Logging con Serilog, sin datos sensibles.
 - **Datos**: acceso solo vía repositorios + Unit of Work. Cambios de esquema = migración EF Core.
 - **Tests**: un test por criterio de aceptación. Nombres `Metodo_Escenario_Resultado`.

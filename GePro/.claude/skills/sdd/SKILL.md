@@ -40,6 +40,7 @@ Lee `Docs/architecture/overview.md` y la guía de cada capa tocada, y comprueba:
 - [ ] Errores vía excepciones de `Model/Exceptions` → `ProblemDetails`.
 - [ ] Cambio de esquema con migración.
 - [ ] Nombres y textos usan los términos de `CONTEXT.md`.
+- [ ] Código legible: sin `=>` en miembros, un paso por línea, nombres claros, sin código muerto.
 - [ ] Nada fuera del alcance de la spec.
 
 Si algo falla: corrige dentro de la misma tarea (no la marques ☑). Si la causa es que la spec está mal o incompleta, **actualiza la spec primero**, avisa al usuario y continúa.

@@ -16,3 +16,4 @@ GePro/GePro/obj/
 
 # Configuración local de Visual Studio
 *.user
+GePro/GePro.DataAccess/Migrations/

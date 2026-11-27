@@ -1,4 +1,4 @@
-﻿# Iniciando el Proyecto — SiGeP.API
+﻿# Iniciando el Proyecto — GePro.API
 
 Bitácora de los pasos seguidos para levantar el proyecto desde cero: Web API, Entity Framework Core, patrón Repository/Unit of Work, AutoMapper, autenticación JWT y logging con Serilog.
 
@@ -38,11 +38,9 @@ Bitácora de los pasos seguidos para levantar el proyecto desde cero: Web API, E
 13. Crear migraciones (referenciar el proyecto en los comandos si hay varios):
 
     ```
-    Add-Migration NewMigration -Project SiGeP.Model
-    Add-Migration NewMigration -Project SiGeP.Model -Context DbModelContext
+    Add-Migration NewMigration -Project GePro.DataAccess -StartupProject GePro.API
 
-    Update-Database -Project SiGeP.Model
-    Update-Database -Project SiGeP.Model -Context DbModelContext
+    Update-Database -Project GePro.DataAccess -StartupProject GePro.API
     ```
 
     Referencia: [EF Core — Migrations with multiple projects](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/projects?tabs=vs)
