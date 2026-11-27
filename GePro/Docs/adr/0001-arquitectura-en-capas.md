@@ -13,10 +13,10 @@ Cuatro proyectos con dependencia unidireccional: `API → Business → DataAcces
 
 - `Model`: entidades, DTOs, excepciones de negocio.
 - `DataAccess`: EF Core, repositorios, Unit of Work.
-- `Business`: servicios con reglas de negocio; usan `IUnitOfWork` (interfaz de `DataAccess`) y mapean entidad → DTO a mano.
+- `Business`: servicios con reglas de negocio; usan `IUnitOfWork` (interfaz de `DataAccess`) y mapean entidad → DTO con AutoMapper.
 - `API`: controllers finos, JWT, Serilog, OpenAPI/Swagger.
 
-> Actualización (documentación alineada con el código): el borrador original citaba AutoMapper en `API`; el código mapea a DTO en los servicios de `Business` y no usa AutoMapper.
+> Actualización (documentación alineada con el código): el borrador original citaba AutoMapper en `API`; el mapeo a DTO se hace en los servicios de `Business` con AutoMapper (Profiles en `GePro.Business/Mapping`, spec 002); `API` no lo referencia.
 
 ## Consecuencias
 

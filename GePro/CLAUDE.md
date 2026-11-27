@@ -7,7 +7,7 @@ Solución **.NET 10 (Web API) + Angular 19 (NgModules)**. Se trabaja con **SDD**
 | Ruta | Qué es |
 |---|---|
 | `GePro.API` | Controllers, `DomainExceptionHandler`, DI, JWT, Serilog, OpenAPI/Swagger. Sin lógica de negocio. |
-| `GePro.Business` | Servicios y reglas de negocio; mapean entidad → DTO a mano. Usa `IUnitOfWork` de `DataAccess`. |
+| `GePro.Business` | Servicios y reglas de negocio; mapean entidad → DTO con AutoMapper (`Mapping/*Profile`). Usa `IUnitOfWork` de `DataAccess`. |
 | `GePro.DataAccess` | EF Core (SQL Server), `DbModelContext`, Repository / Unit of Work, borrado lógico y auditoría, migraciones. |
 | `GePro.Model` | Entidades (`Model/`), DTOs (`DTO/`), `Base/`, excepciones de negocio. Sin dependencias. |
 | `GePro.API.Tests`, `GePro.Business.Tests` | xUnit. |
@@ -83,7 +83,7 @@ Configuración local: la API necesita `ConnectionStrings:DefaultConnection` y `J
 ## Convenciones (resumen; el detalle está en `Docs/architecture/`)
 
 - **Legibilidad primero**: se prioriza que el código se lea fácil sobre que sea corto o ingenioso. Cuerpos de método en bloque (sin `=>` en miembros), un paso por línea con variables de nombre claro, métodos pequeños con nombre que explica su intención, sin abreviaturas ni código muerto.
-- **Backend**: async/await con `CancellationToken`, DTOs en la frontera de la API (mapeo manual en los servicios de `Business`, sin AutoMapper), sin exponer entidades. Errores como excepciones de `Model/Exceptions` → `ProblemDetails`. Logging con Serilog, sin datos sensibles.
+- **Backend**: async/await con `CancellationToken`, DTOs en la frontera de la API (AutoMapper 14 en `GePro.Business/Mapping`, un `<Entidad>Profile` por entidad; `API` no referencia AutoMapper), sin exponer entidades. Errores como excepciones de `Model/Exceptions` → `ProblemDetails`. Logging con Serilog, sin datos sensibles.
 - **Datos**: acceso solo vía repositorios + Unit of Work. Borrado lógico (`ISoftDelete`) y auditoría en `UnitOfWork`. Cambios de esquema = migración EF Core.
 - **Tests**: xUnit; un test por criterio de aceptación. Nombres `Metodo_Escenario_Resultado`. Sin librería de mocks: dobles escritos a mano en `Business.Tests`, `WebApplicationFactory<Program>` en `API.Tests`.
 - **Frontend**: módulos por feature (`NgModule`), servicios para HTTP, sin lógica de negocio en componentes.

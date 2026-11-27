@@ -35,6 +35,7 @@ GePro.DataAccess/
   IUnitOfWork.cs, UnitOfWork.cs    (propiedad del repositorio)
   Migrations/…                     (local; ver data-access.md)
 GePro.Business/
+  Mapping/XxxProfile.cs            (Xxx → XxxDTO con AutoMapper)
   Services/XxxService.cs           (IXxxService + XxxService en el mismo archivo)
   DependencyInjection.cs           (registro Scoped)
 GePro.API/
