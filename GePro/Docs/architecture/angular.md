@@ -1,8 +1,10 @@
 # Frontend Angular 19 (`GePro/`)
 
-Proyecto con **NgModules** (no standalone) hasta que un ADR diga lo contrario.
+Proyecto con **NgModules** (no standalone) hasta que un ADR diga lo contrario. Angular 19, tests con Karma + Jasmine (`npm test`), `npm start` sirve en `127.0.0.1`.
 
-## Estructura
+**Estado actual**: `GePro/GePro/src/app/` solo contiene el esqueleto generado (`app.module.ts`, `app-routing.module.ts`, `app.component.*`). Las carpetas `core/`, `shared/` y `features/` de abajo son la **estructura objetivo**: se crean con la primera feature de frontend.
+
+## Estructura objetivo
 
 ```
 src/app/

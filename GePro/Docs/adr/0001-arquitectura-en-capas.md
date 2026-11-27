@@ -11,10 +11,12 @@ GePro es una Web API .NET 10 con frontend Angular 19. Se necesita una separació
 
 Cuatro proyectos con dependencia unidireccional: `API → Business → DataAccess → Model`.
 
-- `Model`: entidades, DTOs, enums.
+- `Model`: entidades, DTOs, excepciones de negocio.
 - `DataAccess`: EF Core, repositorios, Unit of Work.
-- `Business`: servicios con reglas de negocio; dependen de interfaces de repositorio.
-- `API`: controllers finos, JWT, Serilog, AutoMapper.
+- `Business`: servicios con reglas de negocio; usan `IUnitOfWork` (interfaz de `DataAccess`) y mapean entidad → DTO a mano.
+- `API`: controllers finos, JWT, Serilog, OpenAPI/Swagger.
+
+> Actualización (documentación alineada con el código): el borrador original citaba AutoMapper en `API`; el código mapea a DTO en los servicios de `Business` y no usa AutoMapper.
 
 ## Consecuencias
 

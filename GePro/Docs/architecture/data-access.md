@@ -1,39 +1,67 @@
 # Capa DataAccess (`GePro.DataAccess`)
 
-Depende solo de `Model`. Aquí vive todo lo relacionado con EF Core.
+Depende solo de `Model`. Aquí vive todo lo relacionado con EF Core (SQL Server, `UseLazyLoadingProxies`).
+
+## Estructura real
+
+```
+GePro.DataAccess/
+  DbModelContext.cs          # DbContext único, Fluent API en OnModelCreating, Seed (ModelBuilderExtensions)
+  DbContextExtension.cs      # filtro global de borrado lógico (interno)
+  DependencyInjection.cs     # AddDataAccess(connectionString)
+  IUnitOfWork.cs, UnitOfWork.cs
+  ICurrentUser.cs            # interfaz; la implementa la API
+  Repositories/IRepository.cs, Repository.cs, SpecificRepositories.cs
+  Extensions/EntityFrameworkExtension.cs, ExpressionBuilder.cs
+  Migrations/                # local; hoy ignorada por Git (ver nota)
+```
 
 ## Reglas
 
-- Un único `GeProDbContext`. Los `DbSet<>` solo exponen entidades de `Model`.
-- **Configuración con Fluent API** en una clase `IEntityTypeConfiguration<T>` por entidad (`Configurations/`), cargadas con `ApplyConfigurationsFromAssembly`. Sin Data Annotations de EF en las entidades.
-- **Repositorios**: una interfaz `IXxxRepository` y su implementación por agregado. Heredan de `IRepository<T>` genérico (`GetByIdAsync`, `ListAsync`, `AddAsync`, `Remove`). Las consultas específicas van como métodos con nombre del dominio (`ListarPorEstadoAsync`), nunca exponen `IQueryable`.
-- **Unit of Work**: `IUnitOfWork` expone los repositorios y `SaveChangesAsync(CancellationToken)`. Es el único sitio que persiste.
-- Lecturas sin cambios: `AsNoTracking()`.
+- Un único `DbModelContext`. Los `DbSet<>` exponen solo entidades de `Model`.
+- **Configuración EF con Fluent API dentro de `OnModelCreating`** (claves, índices únicos, cascadas a `Restrict`). No hay clases `IEntityTypeConfiguration` por entidad.
+- **Borrado lógico**: toda entidad con `ISoftDelete` recibe un filtro global (`Deleted == null`) y un índice sobre `Deleted`. `IRepository.Remove` marca la entidad; `UnitOfWork.SaveChangesAsync` la convierte en `Modified` y asigna `Deleted`/`DeletedBy`.
+- **Auditoría**: `UnitOfWork.ApplyAudit()` rellena `Created/Updated/Deleted` con `TimeProvider` y los `*By` con `ICurrentUser.UserName`.
+- **Repositorios**: `IRepository<T>` genérico (`GetByIdAsync`, `FirstOrDefaultAsync`, `AnyAsync`, `ListAsync`, `GetPagedAsync`, `AddAsync`, `Remove`). Las consultas específicas van en `IXxxRepository` dentro de `Repositories/SpecificRepositories.cs`, con nombre de dominio (`ListByProvinceAsync`). Nunca exponen `IQueryable`.
+- **Unit of Work**: `IUnitOfWork` expone un repositorio por entidad y `SaveChangesAsync(CancellationToken)`. Es el único sitio que persiste. Un repositorio nuevo se agrega a `IUnitOfWork` y a `UnitOfWork`.
+- Lecturas: `AsNoTracking()`. Los repositorios específicos usan `Include` explícito solo donde el servicio lo necesita.
 - Todos los métodos son `async` y reciben `CancellationToken`.
-- **Migraciones**: todo cambio de esquema = migración EF Core con nombre descriptivo (`AddProyectoEstado`). Se revisa el SQL generado antes de dar la tarea por terminada.
-- Los repositorios no hacen validaciones de negocio ni lanzan excepciones de negocio (devuelven `null` / colecciones vacías).
+- Los repositorios no validan reglas de negocio ni lanzan excepciones de negocio (devuelven `null` o colecciones vacías).
+- **Seed**: datos iniciales en `ModelBuilderExtensions.Seed` (`HasData`), con fecha fija (`SeedDate`) para que el modelo no cambie en cada compilación.
+- `AddDataAccess` falla al arrancar si la cadena de conexión está vacía. La API debe registrar además `ICurrentUser`.
+
+## Migraciones
+
+Proyecto de inicio = `GePro.API` (tiene el host, la configuración y `Microsoft.EntityFrameworkCore.Design`). Desde la Package Manager Console:
+
+```
+Add-Migration NombreDescriptivo -Project GePro.DataAccess -StartupProject GePro.API
+Update-Database -Project GePro.DataAccess -StartupProject GePro.API
+```
+
+Con la CLI: `dotnet ef migrations add NombreDescriptivo --project GePro.DataAccess --startup-project GePro.API`.
+
+Requiere `ConnectionStrings:DefaultConnection` (user-secrets o `appsettings.Development.json`). Se revisa el SQL generado antes de dar la tarea por terminada.
+
+> Nota: `.gitignore` excluye `GePro/GePro.DataAccess/Migrations/`, así que las migraciones no se versionan. Ver "Dudas" del informe de documentación.
 
 ## Ejemplo
 
 ```csharp
-public interface IProyectoRepository : IRepository<Proyecto>
+public interface ICityRepository : IRepository<City>
 {
-    Task<IReadOnlyList<Proyecto>> ListarPorEstadoAsync(EstadoProyecto estado, CancellationToken ct);
+    Task<IReadOnlyList<City>> ListByProvinceAsync(int provinceId, CancellationToken ct);
 }
 
-public class ProyectoRepository(GeProDbContext db) : Repository<Proyecto>(db), IProyectoRepository
+public class CityRepository(DbModelContext context) : Repository<City>(context), ICityRepository
 {
-    public async Task<IReadOnlyList<Proyecto>> ListarPorEstadoAsync(EstadoProyecto estado, CancellationToken ct) =>
-        await db.Proyectos.AsNoTracking().Where(p => p.Estado == estado).ToListAsync(ct);
-}
-
-public class ProyectoConfiguration : IEntityTypeConfiguration<Proyecto>
-{
-    public void Configure(EntityTypeBuilder<Proyecto> b)
+    public async Task<IReadOnlyList<City>> ListByProvinceAsync(int provinceId, CancellationToken ct)
     {
-        b.HasKey(p => p.Id);
-        b.Property(p => p.Nombre).IsRequired().HasMaxLength(200);
-        b.HasIndex(p => p.Nombre).IsUnique();
+        return await DbSet.AsNoTracking()
+            .Include(c => c.Province)
+            .Where(c => c.ProvinceId == provinceId)
+            .OrderBy(c => c.Name)
+            .ToListAsync(ct);
     }
 }
 ```
@@ -41,6 +69,6 @@ public class ProyectoConfiguration : IEntityTypeConfiguration<Proyecto>
 ## Errores típicos
 
 - Devolver `IQueryable` para que el servicio componga consultas.
-- Llamar a `SaveChangesAsync` dentro del repositorio.
+- Llamar a `SaveChangesAsync` del `DbContext` dentro de un repositorio.
 - Cambiar una entidad sin crear la migración.
-- Cargar relaciones con `Include` por defecto "por si acaso".
+- Borrar físicamente en lugar de usar `Remove` (borrado lógico).

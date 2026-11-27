@@ -6,12 +6,12 @@ Solución **.NET 10 (Web API) + Angular 19 (NgModules)** desarrollada con **SDD*
 
 | Proyecto | Contenido |
 |---|---|
-| `GePro.API` | Controllers, middlewares, DI, JWT, Serilog. |
-| `GePro.Business` | Servicios y reglas de negocio. |
-| `GePro.DataAccess` | EF Core, repositorios, Unit of Work, migraciones. |
-| `GePro.Model` | Entidades, DTOs, enums, excepciones de negocio. |
+| `GePro.API` | Controllers, `DomainExceptionHandler`, DI, JWT, Serilog, OpenAPI/Swagger. |
+| `GePro.Business` | Servicios y reglas de negocio (mapean entidad → DTO). |
+| `GePro.DataAccess` | EF Core (SQL Server), `DbModelContext`, repositorios, Unit of Work, migraciones. |
+| `GePro.Model` | Entidades, DTOs, excepciones de negocio. |
 | `GePro.API.Tests`, `GePro.Business.Tests` | Tests xUnit. |
-| `GePro/` | Frontend Angular (`GePro.UI.esproj`). |
+| `GePro/` | Frontend Angular 19 (`GePro.UI.esproj`); hoy solo el esqueleto generado. |
 
 Dependencias: `API → Business → DataAccess → Model`.
 
@@ -20,12 +20,23 @@ Dependencias: `API → Business → DataAccess → Model`.
 ```bash
 dotnet build GePro.slnx
 dotnet test GePro.slnx
-dotnet run --project GePro.API
+dotnet run --project GePro.API --launch-profile https
 cd GePro && npm install && npm start     # Angular
 cd GePro && npm test
 ```
 
-Con la API en `Development`, Swagger UI está en `/swagger`.
+Con la API en `Development`, Swagger UI está en `/swagger` (botón *Authorize*: pegar el token de `POST /api/Authentication/Authenticate`, sin el prefijo `Bearer`).
+
+Migraciones (Package Manager Console):
+
+```
+Add-Migration NombreDescriptivo -Project GePro.DataAccess -StartupProject GePro.API
+Update-Database -Project GePro.DataAccess -StartupProject GePro.API
+```
+
+## Configuración local
+
+La API necesita `ConnectionStrings:DefaultConnection` y `JwtTokenConfig:Secret` (≥ 32 caracteres). Guárdalos en user-secrets (`dotnet user-secrets set "JwtTokenConfig:Secret" "<clave>" --project GePro.API`) o en `appsettings.Development.json`; no subas contraseñas ni secretos al repositorio. El logging a SQL Server (`Serilog.Sinks.MSSqlServer`) se configura en la sección `Serilog` de `appsettings`.
 
 ## Flujo de trabajo (SDD)
 

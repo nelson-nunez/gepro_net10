@@ -1,38 +1,52 @@
 # Capa Model (`GePro.Model`)
 
-Sin dependencias de otros proyectos ni de EF Core.
+Sin referencias a otros proyectos. Usa Data Annotations (`System.ComponentModel.DataAnnotations`) solo para el tipo y largo de columnas.
+
+## Estructura real
+
+| Carpeta | Namespace | Contenido |
+|---|---|---|
+| `Base/` | `GePro.Model.Base` | `BaseEntity` (`Id`, auditoría `Created/Updated/Deleted` y `CreatedBy/UpdatedBy/DeletedBy`), `IEntity`, `ISoftDelete`, `PagingSortFilterRequest`, `PagedDataResponse<T>`. |
+| `Model/` | `GePro.Model.Model` | Entidades: `Customer`, `Employee`, `Gender`. Subcarpetas `Address/` (`GePro.Model.Model.Address`: `Address`, `City`, `Neighborhood`, `Province`) y `Person/` (`GePro.Model.Model.Person`: `Person`). |
+| `ModelUser/` | `GePro.Model.ModelUser` | `AppUser`, `Role`. |
+| `BaseDTO/` | `GePro.Model.BaseDTO` | `BaseEntityDTO<TId>` (`Id` + fechas de auditoría), `ActionResultDTO`, `ExceptionDTO`. |
+| `DTO/` | `GePro.Model.DTO` | `CustomerDTO`, `EmployeeDTO`, `PersonDTO`, `AddressDTO`, `GenderDTO`, `AuthenticatedUserDTO`, etc. Sufijo `DTO` en mayúsculas. |
+| `Exceptions/` | `GePro.Model.Exceptions` | `DomainException` (abstracta), `NotFoundException`, `UnauthorizedException`. |
 
 ## Reglas
 
-- **Entidades** (`Entities/`): clases POCO con `Id`, propiedades y relaciones de navegación. Nombres en singular, términos de `CONTEXT.md`.
-- Las invariantes simples (campos obligatorios, longitudes) se expresan en la configuración EF o en el servicio, no con atributos de transporte.
-- **DTOs** (`Dtos/<Feature>/`): `XxxDto` (lectura), `CreateXxxDto`, `UpdateXxxDto`. Usar `record` o clases con `init`. Nunca contienen entidades dentro.
-- **Enums** (`Enums/`): valores explícitos; se persisten como string o int según el ADR vigente.
-- **Excepciones** (`Exceptions/`): `NotFoundException`, `ValidationException`, `ConflictException`, `ForbiddenException`, todas heredan de `DomainException`.
-- Auditoría: si la spec la pide, `CreatedAt` / `UpdatedAt` en una clase base `AuditableEntity`.
-- Nullable reference types activados; `string` no nulo por defecto.
+- **Entidades**: clases POCO que heredan de `BaseEntity`. Nombres en singular, términos de `CONTEXT.md`. Las propiedades de texto se inicializan con `string.Empty`.
+- **Borrado lógico**: `BaseEntity` implementa `ISoftDelete`. Nada se borra físicamente (ver `data-access.md`).
+- **Auditoría**: la rellena `UnitOfWork`; las entidades no asignan `Created*`/`Updated*`/`Deleted*`.
+- **DTOs**: clases con `get; set;`. Las de lectura heredan de `BaseEntityDTO<int>`. Nunca contienen entidades dentro. Los DTO de request que solo existen por el contrato HTTP (por ejemplo `SigninRequest`, `AuthTokenResponse`) viven en `GePro.API/Contracts/`.
+- **Excepciones de negocio**: heredan de `DomainException`. Hoy existen `NotFoundException` (404) y `UnauthorizedException` (401). Una excepción nueva (`ValidationException`, `ConflictException`, `ForbiddenException`) se crea cuando una spec la requiera, junto con su traducción en `DomainExceptionHandler`.
+- Nullable reference types activados.
 
 ## Ejemplo
 
 ```csharp
-namespace GePro.Model.Entities;
-
-public class Proyecto : AuditableEntity
+namespace GePro.Model.Model
 {
-    public int Id { get; set; }
-    public string Nombre { get; set; } = string.Empty;
-    public EstadoProyecto Estado { get; set; }
-    public ICollection<Tarea> Tareas { get; set; } = new List<Tarea>();
+    public class Gender : BaseEntity
+    {
+        public const int Male = 1;
+
+        [Column(TypeName = "VARCHAR"), StringLength(128)]
+        public string Name { get; set; } = string.Empty;
+    }
 }
 
-namespace GePro.Model.Dtos.Proyecto;
-
-public record ProyectoDto(int Id, string Nombre, string Estado);
-public record CreateProyectoDto(string Nombre);
+namespace GePro.Model.DTO
+{
+    public class GenderDTO : BaseEntityDTO<int>
+    {
+        public string Name { get; set; } = string.Empty;
+    }
+}
 ```
 
 ## Errores típicos
 
 - DTO que reutiliza la entidad "para ir más rápido".
-- Lógica (métodos de negocio) dentro de la entidad que necesita servicios o repositorios.
-- Nombres en inglés/español mezclados o términos que no están en `CONTEXT.md`.
+- Lógica de negocio (métodos que necesitan servicios o repositorios) dentro de la entidad.
+- Nombres en inglés y español mezclados, o términos que no están en `CONTEXT.md`.

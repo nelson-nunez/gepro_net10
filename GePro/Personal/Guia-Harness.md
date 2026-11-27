@@ -64,9 +64,9 @@ En Visual Studio, `GePro.slnx` agrupa estos archivos en carpetas de solución: `
 |---|---|
 | `overview.md` | Las capas, qué va y qué NO va en cada una, estructura de ficheros por feature, flujo de una petición y temas transversales (errores, auth, logging, transacciones). |
 | `model.md` | Entidades, DTOs, enums y excepciones de negocio (`GePro.Model`). |
-| `data-access.md` | DbContext, Fluent API, repositorios, Unit of Work y migraciones (`GePro.DataAccess`). |
-| `business.md` | Servicios, validaciones, reglas de negocio y tests de servicio (`GePro.Business`). |
-| `api.md` | Controllers finos, `ProblemDetails`, JWT, AutoMapper, DI (`GePro.API`). |
+| `data-access.md` | `DbModelContext`, Fluent API, repositorios, Unit of Work, borrado lógico y migraciones (`GePro.DataAccess`). |
+| `business.md` | Servicios, mapeo a DTO, reglas de negocio y tests de servicio (`GePro.Business`). |
+| `api.md` | Controllers finos, `ProblemDetails`, JWT, Swagger/OpenAPI, DI (`GePro.API`). |
 | `angular.md` | Estructura de módulos por feature, servicios HTTP, formularios y estados de pantalla (`GePro/`). |
 
 Cada guía tiene reglas, un ejemplo y errores típicos. El agente las lee **antes** de escribir código en esa capa. Son la fuente de verdad: si el código y la guía discrepan, se corrige uno de los dos.

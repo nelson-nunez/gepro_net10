@@ -13,7 +13,8 @@ Commits y ramas del flujo SDD. Una spec = una rama. Una tarea = un commit.
 - **Mensaje**: `tipo(NNN): descripción en minúsculas, imperativo, ≤ 72 caracteres`, en español.
   - Tipos: `docs` (spec, ADR, CONTEXT), `feat`, `fix`, `test`, `refactor`, `chore`.
   - Cambios sin spec (harness, solución, README): `chore: …` o `docs: …` sin `(NNN)`.
-- Nunca commitear: `.env`, credenciales, `*.user`, `bin/`, `obj/`, `node_modules/`, `.vs/`. Si aparece algo así en `git status`, avisa y exclúyelo.
+- Nunca commitear: `.env`, credenciales, `*.user`, `bin/`, `obj/`, `node_modules/`, `.vs/`, ni `appsettings*.json` que contengan contraseñas, cadenas de conexión con usuario/clave o `JwtTokenConfig:Secret` (van en user-secrets). Si aparece algo así en `git status`, avisa y exclúyelo. No leas `appsettings.*.json`: `settings.json` lo deniega; revisa con `git diff --stat` y pregunta.
+- La raíz de Git es la carpeta superior a `GePro/`: las rutas de `git status` salen con prefijo `GePro/`.
 - No uses `--no-verify`, `--force` ni `push --force`.
 
 ## Caso A — Spec nueva (se agrega `Docs/specs/NNN-nombre/`)

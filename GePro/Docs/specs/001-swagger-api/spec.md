@@ -1,8 +1,8 @@
 # 001 — Swagger en la API
 
-- **Estado**: Aprobada
-- **Aprobación**: explícita del usuario al pedir crear y ejecutar la feature (2026-11-03)
-- **Fecha**: 2026-11-03
+- **Estado**: Implementada
+- **Aprobación**: explícita del usuario al pedir crear y ejecutar la feature (2026-11-03). Ampliación (esquema Bearer / botón Authorize) pedida por el usuario el 2026-11-27.
+- **Fecha**: 2026-11-03 (actualizada 2026-11-27)
 - **Capas afectadas**: API
 
 ## 1. Problema y objetivo
@@ -16,9 +16,10 @@ Explorar y probar los endpoints de `GePro.API` desde el navegador sin herramient
 - Disponible solo en entorno `Development`.
 - Perfiles `http` y `https` de `launchSettings.json` abren `/swagger` al iniciar.
 - Abrir en Chrome: se configura en Visual Studio (Browse With → Chrome → Set as Default).
+- Esquema de seguridad Bearer JWT en el documento OpenAPI (`BearerSecurityTransformer`), para que Swagger UI muestre el botón **Authorize** y envíe `Authorization: Bearer <token>`. El token se obtiene de `POST /api/Authentication/Authenticate` y se pega sin el prefijo `Bearer`.
 
 **Fuera**
-- Botón "Authorize" / esquema JWT (se añade con la spec de autenticación).
+- Esquema por endpoint: el requisito de seguridad es global, por lo que el candado también aparece en `Authenticate` (solo visual; sigue siendo `[AllowAnonymous]`).
 - Comentarios XML, versionado de API, Swagger en producción.
 - Perfil `Container (Dockerfile)`.
 
@@ -36,7 +37,7 @@ Ninguno nuevo.
 | Método | Ruta | Request | Response | Errores |
 |---|---|---|---|---|
 | GET | /swagger/index.html | — | HTML de Swagger UI | 404 fuera de Development |
-| GET | /openapi/v1.json | — | Documento OpenAPI | 404 fuera de Development |
+| GET | /openapi/v1.json | — | Documento OpenAPI, con el esquema de seguridad `Bearer` (`http`, `bearer`, `JWT`) y requisito de seguridad global | 404 fuera de Development |
 
 ## 6. Modelo de datos
 
@@ -52,6 +53,7 @@ No aplica.
 - [x] **CA-02**: Dado entorno Development, cuando se pide `/openapi/v1.json`, entonces responde 200 y es la fuente de Swagger UI.
 - [x] **CA-03**: Dado entorno Production, cuando se pide `/swagger/index.html`, entonces responde 404.
 - [x] **CA-04**: Dados los perfiles `http` y `https`, entonces `launchBrowser` es true y `launchUrl` es `swagger`.
+- [x] **CA-05**: Dado entorno Development, cuando se pide `/openapi/v1.json`, entonces declara en `components.securitySchemes` el esquema `Bearer` (`type: http`, `scheme: bearer`, `bearerFormat: JWT`) y un requisito `security` global.
 
 ## 9. Preguntas abiertas
 
