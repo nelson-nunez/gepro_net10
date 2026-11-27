@@ -8,7 +8,7 @@
 | 1 | Tracer bullet: paquete AutoMapper 14.x + registro en `AddBusiness()` + `GenderProfile` + `GenderService` migrado + test de validación de configuración | CA-01, CA-06 (parcial) | Business, Tests | ☑ |
 | 2 | `ProvinceProfile`, `CityProfile`, `NeighborhoodProfile` y servicios de referencia migrados | CA-04, CA-06 | Business, Tests | ☑ |
 | 3 | `CustomerProfile` y `CustomerService` sin `ToDto` | CA-02, CA-03 | Business, Tests | ☑ |
-| 4 | `EmployeeProfile` (`Employee` → `EmployeeDTO`) | CA-02b | Business, Tests | ☐ |
+| 4 | `EmployeeProfile` (`Employee` → `EmployeeDTO`) | CA-02b | Business, Tests | ☑ |
 | 5 | `AppUserProfile`, `AuthenticationService` migrado y `AuthenticationServiceTests` actualizados | CA-05 | Business, Tests | ☐ |
 | 6 | Cierre: verificación de que no quedan mapeos manuales, API sin referencia a AutoMapper, documentación actualizada | CA-07, CA-08, CA-09 | Business, API, Docs | ☐ |
 
