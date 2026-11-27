@@ -46,6 +46,24 @@ public class SwaggerTests
     }
 
     [Fact]
+    public async Task GetOpenApiDocument_Development_DeclaraEsquemaBearerJwt()
+    {
+        var cliente = CrearCliente("Development");
+
+        var contenido = await cliente.GetStringAsync("/openapi/v1.json");
+
+        using var documento = JsonDocument.Parse(contenido);
+        var esquema = documento.RootElement
+            .GetProperty("components")
+            .GetProperty("securitySchemes")
+            .GetProperty("Bearer");
+        Assert.Equal("http", esquema.GetProperty("type").GetString());
+        Assert.Equal("bearer", esquema.GetProperty("scheme").GetString());
+        Assert.Equal("JWT", esquema.GetProperty("bearerFormat").GetString());
+        Assert.True(documento.RootElement.TryGetProperty("security", out _));
+    }
+
+    [Fact]
     public async Task GetSwaggerIndex_Production_Devuelve404()
     {
         var response = await CrearCliente("Production").GetAsync("/swagger/index.html");
