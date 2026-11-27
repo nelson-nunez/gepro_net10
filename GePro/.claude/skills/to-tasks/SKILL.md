@@ -17,4 +17,5 @@ description: Divide una spec aprobada en tareas verticales ordenadas en Docs/spe
    - Tamaño: lo que cabe en un commit revisable.
    - Si hay cambio de esquema, la migración va en la misma tarea que lo necesita.
    - El frontend va en tareas propias, después del endpoint que consume.
-5. Muestra la lista al usuario y ajusta antes de cerrar. Sugiere continuar con `/sdd` para implementar la tarea 1.
+5. **Agrega `tasks.md` a la solución**: en `GePro.slnx`, dentro de la carpeta `/Docs/specs/NNN-nombre/` (ya creada por `/to-spec`; si falta, créala), añade `<File Path="Docs/specs/NNN-nombre/tasks.md" />` si no está. Incluye el cambio en el commit del plan.
+6. Muestra la lista al usuario y ajusta antes de cerrar. Sugiere continuar con `/sdd` para implementar la tarea 1.

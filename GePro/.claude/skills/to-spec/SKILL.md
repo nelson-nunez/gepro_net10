@@ -15,8 +15,17 @@ description: Convierte lo acordado en la conversación en una spec funcional en 
    - Cada criterio de aceptación es verificable y en formato Dado / Cuando / Entonces.
    - Alcance con lista explícita de "Fuera".
    - Estado inicial: `Borrador`.
-5. Ejecuta `/commit-sdd` (caso A): crea la rama `feature/NNN-nombre`, commitea la spec y la pushea.
-6. Muestra al usuario un resumen corto y pide aprobación. Al aprobar, cambia `Estado` a `Aprobada` y vuelve a ejecutar `/commit-sdd` (caso A) para commitear y pushear el cambio.
+5. **Agrega la spec a la solución**: en `GePro.slnx` añade (si no existe) una carpeta de solución con la ruta del archivo, justo antes de la carpeta `/Docs/specs/_template/`, siguiendo el formato de las existentes:
+
+   ```xml
+   <Folder Name="/Docs/specs/NNN-nombre/">
+     <File Path="Docs/specs/NNN-nombre/spec.md" />
+   </Folder>
+   ```
+
+   Si el `.slnx` quedó modificado, entra en el mismo commit de la spec.
+6. Ejecuta `/commit-sdd` (caso A): crea la rama `feature/NNN-nombre`, commitea la spec y la pushea.
+7. Muestra al usuario un resumen corto y pide aprobación. Al aprobar, cambia `Estado` a `Aprobada` y vuelve a ejecutar `/commit-sdd` (caso A) para commitear y pushear el cambio.
 
 ## Reglas
 

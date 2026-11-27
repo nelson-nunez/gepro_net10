@@ -107,8 +107,8 @@ Los criterios de aceptación son la definición de "terminado": cada uno acaba e
 | Quiero… | Lo pongo en… |
 |---|---|
 | Definir una palabra nueva del dominio | `CONTEXT.md` (antes de usarla en código) |
-| Escribir lo que hará una feature | `Docs/specs/NNN-nombre/spec.md` |
-| Planificar cómo implementarla | `Docs/specs/NNN-nombre/tasks.md` |
+| Escribir lo que hará una feature | `Docs/specs/NNN-nombre/spec.md` (`/to-spec` también la agrega a `GePro.slnx`) |
+| Planificar cómo implementarla | `Docs/specs/NNN-nombre/tasks.md` (`/to-tasks` también la agrega a `GePro.slnx`) |
 | Registrar una decisión técnica importante | Nuevo `Docs/adr/NNNN-titulo.md` |
 | Cambiar cómo se escribe el código de una capa | La guía de esa capa en `Docs/architecture/` (y un ADR si es un cambio de fondo) |
 | Cambiar comandos o reglas generales | `CLAUDE.md` |

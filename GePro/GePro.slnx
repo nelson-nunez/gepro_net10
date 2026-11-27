@@ -18,6 +18,12 @@
     <File Path="Docs/specs/001-swagger-api/spec.md" />
     <File Path="Docs/specs/001-swagger-api/tasks.md" />
   </Folder>
+  <Folder Name="/Docs/specs/002-automapper/">
+    <File Path="Docs/specs/002-automapper/spec.md" />
+  </Folder>
+  <Folder Name="/Docs/specs/003-fluentvalidation/">
+    <File Path="Docs/specs/003-fluentvalidation/spec.md" />
+  </Folder>
   <Folder Name="/Docs/specs/_template/">
     <File Path="Docs/specs/_template/spec.md" />
     <File Path="Docs/specs/_template/tasks.md" />
