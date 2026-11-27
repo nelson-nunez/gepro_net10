@@ -66,4 +66,4 @@ HTTP → Middleware (Serilog, errores) → [Authorize] Controller
 
 ## Reglas de revisión (resumen)
 
-Una tarea no está terminada si: hay entidades expuestas por la API, un controller con `if` de negocio, un servicio con `DbContext`, una consulta fuera de un repositorio, un cambio de esquema sin migración, o un término de dominio que no está en `CONTEXT.md`.
+Una tarea no está terminada si: el código es difícil de leer (cuerpos con flecha, líneas que encadenan varios pasos, nombres abreviados), hay entidades expuestas por la API, un controller con `if` de negocio, un servicio con `DbContext`, una consulta fuera de un repositorio, un cambio de esquema sin migración, o un término de dominio que no está en `CONTEXT.md`.

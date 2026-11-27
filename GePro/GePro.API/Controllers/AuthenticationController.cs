@@ -9,9 +9,7 @@ namespace GePro.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [AllowAnonymous]
-    public class AuthenticationController(
-        IAuthenticationService authenticationService,
-        IJwtTokenService tokenService) : ControllerBase
+    public class AuthenticationController(IAuthenticationService authenticationService, IJwtTokenService tokenService) : ControllerBase
     {
         [HttpPost("Authenticate")]
         [ProducesResponseType<AuthTokenResponse>(StatusCodes.Status200OK)]

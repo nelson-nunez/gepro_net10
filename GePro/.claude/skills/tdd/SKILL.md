@@ -14,13 +14,14 @@ description: Implementa una tarea de tasks.md con ciclo red-green-refactor, un t
 
 1. **Red**: escribe un test que exprese un criterio de aceptación (`Metodo_Escenario_Resultado`). Ejecútalo (`dotnet test` o `npm test`) y comprueba que falla por la razón correcta.
 2. **Green**: escribe el código mínimo que lo hace pasar, siguiendo las guías de arquitectura y las dependencias `API → Business → DataAccess → Model`.
-3. **Refactor**: limpia con los tests en verde. No cambies comportamiento.
+3. **Refactor**: limpia con los tests en verde y prioriza la **legibilidad** (ver "Legibilidad" en `CLAUDE.md`). No cambies comportamiento.
 4. Repite por cada criterio de la tarea.
 
 ## Reglas
 
 - Testea comportamiento por la interfaz pública, no detalles internos.
 - Mocks solo en los límites (repositorios, servicios externos).
+- Escribe el código para que se lea fácil: bloques en lugar de `=>` en miembros, un paso por línea, nombres completos y métodos con una sola intención.
 - No añadas nada que la spec no pida. Si surge algo, anótalo en la spec o en "Preguntas abiertas".
 - Si el código diverge de la spec o de una guía de arquitectura, actualiza el documento primero y avisa.
 
