@@ -9,15 +9,13 @@ namespace GePro.Business.Services
         Task<IReadOnlyList<ProvinceDTO>> ListAsync(CancellationToken ct);
     }
 
-    public class ProvinceService(IUnitOfWork uow) : IProvinceService
+    public class ProvinceService(IUnitOfWork uow, IMapper mapper) : IProvinceService
     {
         public async Task<IReadOnlyList<ProvinceDTO>> ListAsync(CancellationToken ct)
         {
             var provinces = await uow.Provinces.ListAsync(null, ct);
-            return provinces
-                .OrderBy(p => p.Name)
-                .Select(p => new ProvinceDTO { Id = p.Id, Name = p.Name })
-                .ToList();
+            var provincesByName = provinces.OrderBy(p => p.Name).ToList();
+            return mapper.Map<IReadOnlyList<ProvinceDTO>>(provincesByName);
         }
     }
 
@@ -26,14 +24,12 @@ namespace GePro.Business.Services
         Task<IReadOnlyList<CityDTO>> ListByProvinceAsync(int provinceId, CancellationToken ct);
     }
 
-    public class CityService(IUnitOfWork uow) : ICityService
+    public class CityService(IUnitOfWork uow, IMapper mapper) : ICityService
     {
         public async Task<IReadOnlyList<CityDTO>> ListByProvinceAsync(int provinceId, CancellationToken ct)
         {
             var cities = await uow.Cities.ListByProvinceAsync(provinceId, ct);
-            return cities
-                .Select(c => new CityDTO { Id = c.Id, Name = c.Name, ProvinceId = c.ProvinceId, ProvinceName = c.Province.Name })
-                .ToList();
+            return mapper.Map<IReadOnlyList<CityDTO>>(cities);
         }
     }
 
@@ -42,14 +38,12 @@ namespace GePro.Business.Services
         Task<IReadOnlyList<NeighborhoodDTO>> ListByCityAsync(int cityId, CancellationToken ct);
     }
 
-    public class NeighborhoodService(IUnitOfWork uow) : INeighborhoodService
+    public class NeighborhoodService(IUnitOfWork uow, IMapper mapper) : INeighborhoodService
     {
         public async Task<IReadOnlyList<NeighborhoodDTO>> ListByCityAsync(int cityId, CancellationToken ct)
         {
             var neighborhoods = await uow.Neighborhoods.ListByCityAsync(cityId, ct);
-            return neighborhoods
-                .Select(n => new NeighborhoodDTO { Id = n.Id, Name = n.Name, CityId = n.CityId, CityName = n.City.Name })
-                .ToList();
+            return mapper.Map<IReadOnlyList<NeighborhoodDTO>>(neighborhoods);
         }
     }
 
