@@ -1,5 +1,6 @@
 using GePro.API.Extensions;
 using GePro.API.Middleware;
+using GePro.API.Security;
 using GePro.Business;
 using GePro.DataAccess;
 using Serilog;
@@ -12,7 +13,7 @@ builder.Host.UseSerilog((context, logger) => logger
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecurityTransformer>());
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
